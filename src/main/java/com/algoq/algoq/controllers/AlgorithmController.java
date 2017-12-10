@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -21,25 +23,16 @@ public class AlgorithmController {
     @Qualifier("MailSender")
     private MailService mSender;
 
-    /**
-     * GET
-     * @return
-     */
     @RequestMapping(method = RequestMethod.GET, value = "/subscribers")
     public List<Subscriber> getAllSubscribers() {
         return aService.getSubscribers();
     }
 
-    /**
-     * POST
-     * @param sub
-     */
     @RequestMapping(method = RequestMethod.POST, value = "/subscribers")
     public void addSubscriber(@RequestBody Subscriber sub) {
         log.info("Adding user.. ");
         aService.addSubscriber(sub);
     }
-
 
     @RequestMapping(value = "/subscribers/{emailAddress:.+}")
     public List<Subscriber> getUserByEmail(@PathVariable("emailAddress") String emailAddress) {
@@ -47,8 +40,8 @@ public class AlgorithmController {
     }
 
     @RequestMapping(value = "/send")
-    public void sendEmail() {
-        String from = "misterjavashell@gmail.com";
+    public void sendEmail() throws MessagingException {
+        String from = "mister@shell.com";
         String to = "quibblehack@gmail.com";
         String subject = "JavaMailSender";
         String body = "Just-Testing!";

@@ -3,35 +3,32 @@ package com.algoq.algoq.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import java.util.Properties;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Component("MailSender")
 public class MailService {
 
     @Autowired
-    JavaMailSender javaMailSender;
+    JavaMailSenderImpl sender;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public void sendMail(String from, String to, String subject, String body) {
+    public void sendMail(String from, String to, String subject, String body) throws MessagingException {
 
-        SimpleMailMessage mail = new SimpleMailMessage();
+        logger.info("preparing message");
 
-        mail.setFrom(from);
-        mail.setTo(to);
-        mail.setSubject(subject);
-        mail.setText(body);
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(to);
 
-        logger.info("Sending...");
+        helper.setText("<html><body><b>testing bold</b><h1>HEADER</h1></body></html>", true);
 
-        javaMailSender.send(mail);
-
-        logger.info("Done!");
+        sender.send(message);
+        logger.info("Message sent!");
     }
 }
