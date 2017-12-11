@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,8 +31,10 @@ import java.text.SimpleDateFormat;
 public class PDFService {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
+    File file = new File("resources/index.html");
+    String HTML = file.getAbsolutePath();
     private String DEST = "/Users/quibbleh4ck/tmp/";
-    private String HTML = "/Users/quibbleh4ck/tmp/index.html";
+//    private String HTML = "/Users/quibbleh4ck/tmp/index.html";
     private String CSS = "/Users/quibbleh4ck/tmp/";
     private String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new java.util.Date());
 
@@ -44,12 +47,10 @@ public class PDFService {
         Document document = new Document();
 
         // step 2
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("/Users/quibbleh4ck/tmp/" + timeStamp + ".pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("/tmp/" + timeStamp + ".pdf"));
         writer.setInitialLeading(12.5f);
         // step 3
         document.open();
-        // step 4
-
 
         // CSS
         CSSResolver cssResolver =
@@ -61,11 +62,11 @@ public class PDFService {
         HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
         htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
         htmlContext.autoBookmark(false);
-        htmlContext.setImageProvider(new AbstractImageProvider() {
-            public String getImageRootPath() {
-                return "/Users/quibbleh4ck/tmp/images";
-            }
-        });
+//        htmlContext.setImageProvider(new AbstractImageProvider() {
+//            public String getImageRootPath() {
+//                return "/tmp/images";
+//            }
+//        });
 
         // Pipelines
         PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);

@@ -48,7 +48,9 @@ public class MailService {
                         "Question: " +
                         "</body></html>",
                 true);
-        helper.addAttachment("Solutions For " + timeStamp, new File("/Users/quibbleh4ck/tmp/" + timeStamp + ".pdf"));
+        File file = new File("src/main/resources/index.html");
+        String absolutePath = file.getAbsolutePath();
+        helper.addAttachment("Solutions For " + timeStamp, new File(absolutePath));
         sender.send(message);
         logger.info("Message sent!");
     }
@@ -70,10 +72,5 @@ public class MailService {
                 e.printStackTrace();
             }
         });
-    }
-
-    public byte[] retrieveAttachmentBytes() throws IOException {
-        Path path = Paths.get("/Users/quibbleh4ck/tmp/" + timeStamp + ".pdf");
-        return Files.readAllBytes(path);
     }
 }
