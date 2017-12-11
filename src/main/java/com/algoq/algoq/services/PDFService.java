@@ -1,5 +1,6 @@
 package com.algoq.algoq.services;
 
+import com.algoq.algoq.Constants.Paths;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -31,7 +32,7 @@ import java.text.SimpleDateFormat;
 public class PDFService {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
-    File file = new File("src/main/resources/");
+    File file = new File(Paths.FILE_RESOURCES);
     String absolutePath = file.getAbsolutePath();
     String HTML = file.getAbsolutePath() + "/index.html";
     private String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new java.util.Date());
@@ -43,7 +44,7 @@ public class PDFService {
         log.info("Constructing new PDF Document");
         Document document = new Document();
 
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( absolutePath + "/" + timeStamp + ".pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( absolutePath + timeStamp + ".pdf"));
         writer.setInitialLeading(12.5f);
         document.open();
 

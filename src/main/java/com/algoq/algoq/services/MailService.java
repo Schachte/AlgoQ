@@ -1,5 +1,6 @@
 package com.algoq.algoq.services;
 
+import com.algoq.algoq.Constants.Paths;
 import com.algoq.algoq.models.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
@@ -41,6 +41,7 @@ public class MailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         logger.info("Sending message to " + subscriber.getEmailAddress());
+
         helper.setTo(subscriber.getEmailAddress());
         helper.setText(emailBody, true);
         File file = new File("src/main/resources/" + timeStamp + ".pdf");
@@ -74,17 +75,21 @@ public class MailService {
      * @return
      */
     public String emailBodyGenerator() throws IOException {
-        File file = new File("src/main/resources/potd.html");
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        StringBuffer stringBuffer = new StringBuffer();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuffer.append(line);
-            stringBuffer.append("\n");
+        try {
+            File file = new File(Paths.PROBLEM_OF_THE_DAY);
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
+            }
+            fileReader.close();
+            logger.info("Completed HTML loader!");
+            return stringBuffer.toString();
+        } catch (Exception e) {
+            throw new FileNotFoundException();
         }
-        fileReader.close();
-        logger.info("Completed HTML loader!");
-        return stringBuffer.toString();
     }
 }
