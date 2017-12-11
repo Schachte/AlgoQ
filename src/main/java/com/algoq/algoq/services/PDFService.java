@@ -31,11 +31,9 @@ import java.text.SimpleDateFormat;
 public class PDFService {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
-    File file = new File("resources/index.html");
-    String HTML = file.getAbsolutePath();
-    private String DEST = "/Users/quibbleh4ck/tmp/";
-//    private String HTML = "/Users/quibbleh4ck/tmp/index.html";
-    private String CSS = "/Users/quibbleh4ck/tmp/";
+    File file = new File("src/main/resources/");
+    String absolutePath = file.getAbsolutePath();
+    String HTML = file.getAbsolutePath() + "/index.html";
     private String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new java.util.Date());
 
     /**
@@ -43,30 +41,20 @@ public class PDFService {
      */
     public void generatePDF() throws DocumentException, IOException {
         log.info("Constructing new PDF Document");
-        // step 1
         Document document = new Document();
 
-        // step 2
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("/tmp/" + timeStamp + ".pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( absolutePath + "/" + timeStamp + ".pdf"));
         writer.setInitialLeading(12.5f);
-        // step 3
         document.open();
 
         // CSS
         CSSResolver cssResolver =
-                XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
-        FileRetrieve retrieve = new FileRetrieveImpl(CSS);
-        cssResolver.setFileRetrieve(retrieve);
+                XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
 
         // HTML
         HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
         htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
         htmlContext.autoBookmark(false);
-//        htmlContext.setImageProvider(new AbstractImageProvider() {
-//            public String getImageRootPath() {
-//                return "/tmp/images";
-//            }
-//        });
 
         // Pipelines
         PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
@@ -78,7 +66,6 @@ public class PDFService {
         XMLParser p = new XMLParser(worker);
         p.parse(new FileInputStream(HTML));
 
-        // step 5
         document.close();
     }
 }

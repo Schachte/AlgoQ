@@ -48,7 +48,7 @@ public class MailService {
                         "Question: " +
                         "</body></html>",
                 true);
-        File file = new File("src/main/resources/index.html");
+        File file = new File("src/main/resources/" + timeStamp + ".pdf");
         String absolutePath = file.getAbsolutePath();
         helper.addAttachment("Solutions For " + timeStamp, new File(absolutePath));
         sender.send(message);
