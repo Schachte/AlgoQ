@@ -18,7 +18,7 @@ public class ScheduledTasks {
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    @Autowired
+    @Autowired // = new MailService();
     private MailService mService;
 
     @Autowired
@@ -30,7 +30,7 @@ public class ScheduledTasks {
     }
 
     //TODO: Set this to a 24 hour schedule so users aren't spammed
-    @Scheduled(fixedRate = 5000000)
+    @Scheduled(fixedRate = 10000)
     public void subscriberNotifier() throws MessagingException {
         log.info("Initializing the email sender");
         mService.sendBulkEmail();

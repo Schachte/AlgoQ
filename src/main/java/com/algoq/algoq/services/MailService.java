@@ -4,12 +4,19 @@ import com.algoq.algoq.models.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Component("MailSender")
@@ -22,6 +29,7 @@ public class MailService {
     AlgorithmService algorithmService;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+    private String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new java.util.Date());
 
     //TODO: Make this parallelized
     /**
@@ -30,12 +38,17 @@ public class MailService {
      * @throws MessagingException
      */
 
-    public void sendEmail(Subscriber subscriber) throws MessagingException {
+    public void sendEmail(Subscriber subscriber) throws MessagingException, IOException {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         logger.info("Sending message to " + subscriber.getEmailAddress());
         helper.setTo(subscriber.getEmailAddress());
-        helper.setText("<html><body><b>testing bold</b><h1>"+ subscriber.getName() +"</h1></body></html>", true);
+        helper.setText("<html>" +
+                        "<body><h1>AlgoQ Algorithm of the Day</h1></br>" +
+                        "Question: " +
+                        "</body></html>",
+                true);
+        helper.addAttachment("Solutions For " + timeStamp, new File("/Users/quibbleh4ck/tmp/" + timeStamp + ".pdf"));
         sender.send(message);
         logger.info("Message sent!");
     }
@@ -53,7 +66,14 @@ public class MailService {
                 sendEmail(s);
             } catch (MessagingException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
+    }
+
+    public byte[] retrieveAttachmentBytes() throws IOException {
+        Path path = Paths.get("/Users/quibbleh4ck/tmp/" + timeStamp + ".pdf");
+        return Files.readAllBytes(path);
     }
 }
