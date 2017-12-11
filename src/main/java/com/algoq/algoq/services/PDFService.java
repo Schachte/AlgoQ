@@ -1,20 +1,20 @@
 package com.algoq.algoq.services;
 
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 
 @Service
 public class PDFService {
+
 
     Logger log = LoggerFactory.getLogger(this.getClass());
     private String tmpPath = "/Users/quibbleh4ck/tmp/";
@@ -31,10 +31,7 @@ public class PDFService {
         PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(tmpPath + timeStamp + ".pdf"));
         doc.open();
 
-
         //Insert PDF Generation Logic Here
-
-
 
         doc.close();
         log.info("PDF Generated");

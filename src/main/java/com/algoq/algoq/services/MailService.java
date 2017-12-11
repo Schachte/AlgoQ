@@ -29,6 +29,7 @@ public class MailService {
      * @param subscriber
      * @throws MessagingException
      */
+
     public void sendEmail(Subscriber subscriber) throws MessagingException {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
