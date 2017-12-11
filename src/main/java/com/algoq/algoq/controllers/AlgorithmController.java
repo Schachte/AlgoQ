@@ -3,6 +3,8 @@ package com.algoq.algoq.controllers;
 import com.algoq.algoq.models.Subscriber;
 import com.algoq.algoq.services.AlgorithmService;
 import com.algoq.algoq.services.MailService;
+import com.algoq.algoq.services.PDFService;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,6 +26,9 @@ public class AlgorithmController {
     @Autowired
     @Qualifier("MailSender")
     private MailService mSender;
+
+    @Autowired
+    private PDFService pdfService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/subscribers")
     public List<Subscriber> getAllSubscribers() {
@@ -39,13 +46,9 @@ public class AlgorithmController {
         return aService.getSubscriber(emailAddress);
     }
 
-    @RequestMapping(value = "/send")
-    public void sendEmail() throws MessagingException {
-        String from = "mister@shell.com";
-        String to = "quibblehack@gmail.com";
-        String subject = "JavaMailSender";
-        String body = "Just-Testing!";
-
-        mSender.sendMail(from, to, subject, body);
+    @RequestMapping(value = "/pdf")
+    public void GenPDF() throws IOException, DocumentException {
+        log.info("Generaeting the PDF");
+        pdfService.generatePDF();
     }
 }

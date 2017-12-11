@@ -21,7 +21,6 @@ public class AlgorithmService {
         ArrayList<Subscriber> subscribers = new ArrayList<>();
         subRep.findAll()
                 .forEach(subscribers::add);
-
         return subscribers;
     }
 
@@ -42,4 +41,5 @@ public class AlgorithmService {
     public List<Subscriber> getSubscriber(String email) {
         return subRep.findByEmailAddress(email);
     }
+
 }
