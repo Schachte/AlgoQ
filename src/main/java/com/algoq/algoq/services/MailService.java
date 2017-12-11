@@ -25,6 +25,10 @@ public class MailService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new java.util.Date());
+    private String emailBody = emailBodyGenerator();
+
+    public MailService() throws IOException {
+    }
 
     //TODO: Make this parallelized
     /**
@@ -38,7 +42,7 @@ public class MailService {
 
         logger.info("Sending message to " + subscriber.getEmailAddress());
         helper.setTo(subscriber.getEmailAddress());
-        helper.setText(emailBodyGenerator(), true);
+        helper.setText(emailBody, true);
         File file = new File("src/main/resources/" + timeStamp + ".pdf");
 //        String absolutePath = file.getAbsolutePath();
 //        helper.addAttachment("Solutions For " + timeStamp, new File(absolutePath));
