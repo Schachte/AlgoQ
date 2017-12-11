@@ -4,18 +4,13 @@ import com.algoq.algoq.models.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -37,20 +32,16 @@ public class MailService {
      * @param subscriber
      * @throws MessagingException
      */
-
     public void sendEmail(Subscriber subscriber) throws MessagingException, IOException {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
         logger.info("Sending message to " + subscriber.getEmailAddress());
         helper.setTo(subscriber.getEmailAddress());
-        helper.setText("<html>" +
-                        "<body><h1>AlgoQ Algorithm of the Day</h1></br>" +
-                        "Question: " +
-                        "</body></html>",
-                true);
+        helper.setText(emailBodyGenerator(), true);
         File file = new File("src/main/resources/" + timeStamp + ".pdf");
-        String absolutePath = file.getAbsolutePath();
-        helper.addAttachment("Solutions For " + timeStamp, new File(absolutePath));
+//        String absolutePath = file.getAbsolutePath();
+//        helper.addAttachment("Solutions For " + timeStamp, new File(absolutePath));
         sender.send(message);
         logger.info("Message sent!");
     }
@@ -72,5 +63,24 @@ public class MailService {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * Dynamically load up html into string for content body
+     * @return
+     */
+    public String emailBodyGenerator() throws IOException {
+        File file = new File("src/main/resources/potd.html");
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+        fileReader.close();
+        logger.info("Completed HTML loader!");
+        return stringBuffer.toString();
     }
 }

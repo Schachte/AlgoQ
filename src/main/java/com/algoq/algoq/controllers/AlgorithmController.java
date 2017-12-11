@@ -20,12 +20,12 @@ import java.util.List;
 public class AlgorithmController {
 
     private static final Logger log = LoggerFactory.getLogger(AlgorithmController.class);
+
     @Autowired
     private AlgorithmService aService;
 
     @Autowired
-    @Qualifier("MailSender")
-    private MailService mSender;
+    private MailService mailService;
 
     @Autowired
     private PDFService pdfService;
@@ -41,14 +41,8 @@ public class AlgorithmController {
         aService.addSubscriber(sub);
     }
 
-    @RequestMapping(value = "/subscribers/{emailAddress:.+}")
-    public List<Subscriber> getUserByEmail(@PathVariable("emailAddress") String emailAddress) {
-        return aService.getSubscriber(emailAddress);
-    }
-
-    @RequestMapping(value = "/pdf")
-    public void GenPDF() throws IOException, DocumentException {
-        log.info("Generaeting the PDF");
-        pdfService.generatePDF();
+    @RequestMapping(value="/email")
+    public void sendEmail() throws MessagingException {
+        mailService.sendBulkEmail();
     }
 }

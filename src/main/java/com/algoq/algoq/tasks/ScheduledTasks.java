@@ -30,10 +30,10 @@ public class ScheduledTasks {
     }
 
     //TODO: Set this to a 24 hour schedule so users aren't spammed
-    @Scheduled(fixedRate = 10000)
-    public void subscriberNotifier() throws MessagingException {
-        log.info("Initializing the email sender");
-        mService.sendBulkEmail();
-    }
+//    @Scheduled(fixedRate = 10000)
+//    public void subscriberNotifier() throws MessagingException {
+//        log.info("Initializing the email sender");
+//        mService.sendBulkEmail();
+//    }
 
 }
