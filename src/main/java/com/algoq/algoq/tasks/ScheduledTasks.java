@@ -24,11 +24,6 @@ public class ScheduledTasks {
     @Autowired
     private AlgorithmService algorithmService;
 
-    @Scheduled(cron = "0 0 * * * ?")
-    public void reportCurrentTime() {
-        log.info("The time is now {}", dateFormat.format(new Date()));
-    }
-
     //TODO: Set this to a 24 hour schedule so users aren't spammed
 //    @Scheduled(fixedRate = 10000)
 //    public void subscriberNotifier() throws MessagingException {
