@@ -1,6 +1,7 @@
 package com.algoq.algoq.services;
 
 import com.algoq.algoq.Constants.Paths;
+import com.algoq.algoq.models.POTD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +25,20 @@ public class TemplateGenerationService {
     /**
      * Generate the template for the problem of the day
      */
-    public String generateProblemOfTheDay(Model model) throws IOException {
+    public String generateProblemOfTheDay(POTD problem) throws IOException {
 
         log.info("This is passed");
-//        model.addAttribute("potd_question", "Ryan Schachte");
-//        model.addAttribute("potd_title", "sup");
-//
-//        ArrayList<String> list = new ArrayList<>();
-//        list.add("A");
-//        list.add("B");
-//        model.addAttribute("potd_resources", list);
-
-//        Context ctx = setCtxVariables(new Context());
         Context ctx = new Context();
-        ctx.setVariable("potd", "Ryan Schachte");
+
+        //TODO: Add in the setCtx function
+        ctx.setVariable("potd_title", problem.getProblemTitle());
+        ctx.setVariable("potd_resources", problem.getResources());
+        ctx.setVariable("potd_problem", problem.getProblemDescription());
 
         //Process the template with the proper context variables
         String html = templateEngine.process("index", ctx);
         PrintWriter pWriter = new PrintWriter(Paths.PROBLEM_OF_THE_DAY_OUTPUT, "UTF-8");
+
         pWriter.println(html);
         pWriter.close();
         log.info("done!");

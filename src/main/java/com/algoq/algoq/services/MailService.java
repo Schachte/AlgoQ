@@ -31,6 +31,7 @@ public class MailService {
     }
 
     //TODO: Make this parallelized
+    //TODO: Ensure that the email body and file attachment is complete before sending
     /**
      * Process the individual email message
      * @param subscriber
@@ -44,9 +45,6 @@ public class MailService {
 
         helper.setTo(subscriber.getEmailAddress());
         helper.setText(emailBody, true);
-        File file = new File("src/main/resources/" + timeStamp + ".pdf");
-//        String absolutePath = file.getAbsolutePath();
-//        helper.addAttachment("Solutions For " + timeStamp, new File(absolutePath));
         sender.send(message);
         logger.info("Message sent!");
     }
@@ -72,12 +70,20 @@ public class MailService {
     }
 
     /**
+     * Attach a file to the email
+     */
+    public void emailAttachFile(MimeMessageHelper helper, File file, String fileName) throws MessagingException {
+        String absolutePath = file.getAbsolutePath();
+        helper.addAttachment(fileName, new File(absolutePath));
+    }
+
+    /**
      * Dynamically load up html into string for content body
      * @return
      */
     public String emailBodyGenerator() throws Exception {
         try {
-            File file = new File(Paths.PROBLEM_OF_THE_DAY);
+            File file = new File(Paths.PROBLEM_OF_THE_DAY_OUTPUT);
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             StringBuffer stringBuffer = new StringBuffer();
