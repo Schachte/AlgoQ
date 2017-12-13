@@ -9,6 +9,10 @@ public class POTDResources {
         this.link = link;
     }
 
+    public POTDResources() {
+
+    }
+
     public String getName() {
         return name;
     }

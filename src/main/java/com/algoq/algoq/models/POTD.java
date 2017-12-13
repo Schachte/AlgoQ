@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 @Description("Handles the fields required for processing problem of the day")
 public class POTD {
+
     private String subject;
     private String problemTitle;
     private String problemDescription;
     private ArrayList<POTDResources> resources;
 
-    POTD(String subject, String problemTitle, String problemDescription, ArrayList<POTDResources> resources) {
-        this.subject = subject;
+    POTD(String problemTitle, String problemDescription, ArrayList<POTDResources> resources) {
         this.problemTitle = problemTitle;
         this.problemDescription = problemDescription;
         this.resources = resources;
@@ -28,7 +28,6 @@ public class POTD {
     public void setSubject(String subject) {
         this.subject = subject;
     }
-
     public String getProblemTitle() {
         return problemTitle;
     }

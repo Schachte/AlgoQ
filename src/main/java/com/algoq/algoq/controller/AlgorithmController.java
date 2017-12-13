@@ -4,12 +4,14 @@ import com.algoq.algoq.models.Subscriber;
 import com.algoq.algoq.services.AlgorithmService;
 import com.algoq.algoq.services.MailService;
 import com.algoq.algoq.services.PDFService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -37,9 +39,9 @@ public class AlgorithmController {
         aService.addSubscriber(sub);
     }
 
-    @RequestMapping(value="/email")
-    public void sendEmail() throws Exception {
-        mailService.sendBulkEmail();
-    }
+//    @RequestMapping(value="/email")
+//    public void sendEmail() throws Exception {
+//        mailService.sendBulkEmail();
+//    }
 
 }

@@ -37,12 +37,11 @@ public class TemplateGenerationService {
 
         //Process the template with the proper context variables
         String html = templateEngine.process("index", ctx);
-        PrintWriter pWriter = new PrintWriter(Paths.PROBLEM_OF_THE_DAY_OUTPUT, "UTF-8");
-
-        pWriter.println(html);
-        pWriter.close();
+//        PrintWriter pWriter = new PrintWriter(Paths.PROBLEM_OF_THE_DAY_OUTPUT, "UTF-8");
+//
+//        pWriter.println(html);
+//        pWriter.close();
         log.info("done!");
-        log.info(html);
 
         return html;
     }

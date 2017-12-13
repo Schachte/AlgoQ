@@ -1,6 +1,7 @@
 package com.algoq.algoq.services;
 
 import com.algoq.algoq.Constants.Paths;
+import com.algoq.algoq.models.POTD;
 import com.algoq.algoq.models.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,10 @@ public class MailService {
 
     @Autowired
     AlgorithmService algorithmService;
+
+
+    @Autowired
+    TemplateGenerationService tempGenService;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new java.util.Date());
@@ -53,10 +58,12 @@ public class MailService {
      * Sends bulk email for the daily algo question
      * @throws MessagingException
      */
-    public void sendBulkEmail() throws Exception {
+    public void sendBulkEmail(POTD problem) throws Exception {
         logger.info("preparing message");
         List<Subscriber> subscriberList = algorithmService.getSubscribers();
-        emailBody = this.emailBodyGenerator();
+//        emailBody = this.emailBodyGenerator();
+        emailBody = tempGenService.generateProblemOfTheDay(problem);
+        logger.info(emailBody);
 
         subscriberList.forEach(s -> {
             try {

@@ -266,10 +266,7 @@
                     <td style="font-family:'Open Sans', Arial, sans-serif; font-size:15px; line-height:18px; color:#30373b;">
                       <br />
                       <div class="question-description">
-                        <span th:text="${potd_problem}">
-                            <!--PROBLEM BODY GOES HERE-->
-
-                        </span>
+                          <div th:remove="tag" th:utext="${potd_problem}"></div>
                       </div>
                     </td>
                   </tr>
