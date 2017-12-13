@@ -1,5 +1,6 @@
 package com.algoq.algoq.services;
 
+import com.algoq.algoq.Constants.Paths;
 import com.algoq.algoq.models.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
@@ -25,9 +25,9 @@ public class MailService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new java.util.Date());
-    private String emailBody = emailBodyGenerator();
+    private String emailBody;
 
-    public MailService() throws IOException {
+    public MailService() throws Exception {
     }
 
     //TODO: Make this parallelized
@@ -41,6 +41,7 @@ public class MailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         logger.info("Sending message to " + subscriber.getEmailAddress());
+
         helper.setTo(subscriber.getEmailAddress());
         helper.setText(emailBody, true);
         File file = new File("src/main/resources/" + timeStamp + ".pdf");
@@ -54,16 +55,17 @@ public class MailService {
      * Sends bulk email for the daily algo question
      * @throws MessagingException
      */
-    public void sendBulkEmail() throws MessagingException {
+    public void sendBulkEmail() throws Exception {
         logger.info("preparing message");
         List<Subscriber> subscriberList = algorithmService.getSubscribers();
+        emailBody = this.emailBodyGenerator();
 
         subscriberList.forEach(s -> {
             try {
                 sendEmail(s);
             } catch (MessagingException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -73,18 +75,23 @@ public class MailService {
      * Dynamically load up html into string for content body
      * @return
      */
-    public String emailBodyGenerator() throws IOException {
-        File file = new File("src/main/resources/potd.html");
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        StringBuffer stringBuffer = new StringBuffer();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuffer.append(line);
-            stringBuffer.append("\n");
+    public String emailBodyGenerator() throws Exception {
+        try {
+            File file = new File(Paths.PROBLEM_OF_THE_DAY);
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
+            }
+            fileReader.close();
+            logger.info("Completed HTML loader!");
+            return stringBuffer.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e);
         }
-        fileReader.close();
-        logger.info("Completed HTML loader!");
-        return stringBuffer.toString();
     }
 }

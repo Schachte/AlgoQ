@@ -18,11 +18,11 @@ public class ScheduledTasks {
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    @Autowired // = new MailService();
-    private MailService mService;
-
-    @Autowired
-    private AlgorithmService algorithmService;
+//    @Autowired // = new MailService();
+//    private MailService mService;
+//
+//    @Autowired
+//    private AlgorithmService algorithmService;
 
     //TODO: Set this to a 24 hour schedule so users aren't spammed
 //    @Scheduled(fixedRate = 10000)

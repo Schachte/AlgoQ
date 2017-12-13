@@ -41,5 +41,4 @@ public class AlgorithmService {
     public List<Subscriber> getSubscriber(String email) {
         return subRep.findByEmailAddress(email);
     }
-
 }

@@ -1,19 +1,15 @@
-package com.algoq.algoq.controllers;
+package com.algoq.algoq.controller;
 
 import com.algoq.algoq.models.Subscriber;
 import com.algoq.algoq.services.AlgorithmService;
 import com.algoq.algoq.services.MailService;
 import com.algoq.algoq.services.PDFService;
-import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -42,7 +38,8 @@ public class AlgorithmController {
     }
 
     @RequestMapping(value="/email")
-    public void sendEmail() throws MessagingException {
+    public void sendEmail() throws Exception {
         mailService.sendBulkEmail();
     }
+
 }
