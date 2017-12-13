@@ -38,7 +38,8 @@ public class AlgorithmController {
     }
 
     @RequestMapping(value="/email")
-    public void sendEmail() throws MessagingException {
+    public void sendEmail() throws Exception {
         mailService.sendBulkEmail();
     }
+
 }

@@ -25,9 +25,9 @@ public class MailService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new java.util.Date());
-    private String emailBody = emailBodyGenerator();
+    private String emailBody;
 
-    public MailService() throws IOException {
+    public MailService() throws Exception {
     }
 
     //TODO: Make this parallelized
@@ -55,16 +55,17 @@ public class MailService {
      * Sends bulk email for the daily algo question
      * @throws MessagingException
      */
-    public void sendBulkEmail() throws MessagingException {
+    public void sendBulkEmail() throws Exception {
         logger.info("preparing message");
         List<Subscriber> subscriberList = algorithmService.getSubscribers();
+        emailBody = this.emailBodyGenerator();
 
         subscriberList.forEach(s -> {
             try {
                 sendEmail(s);
             } catch (MessagingException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -74,7 +75,7 @@ public class MailService {
      * Dynamically load up html into string for content body
      * @return
      */
-    public String emailBodyGenerator() throws IOException {
+    public String emailBodyGenerator() throws Exception {
         try {
             File file = new File(Paths.PROBLEM_OF_THE_DAY);
             FileReader fileReader = new FileReader(file);
@@ -89,7 +90,8 @@ public class MailService {
             logger.info("Completed HTML loader!");
             return stringBuffer.toString();
         } catch (Exception e) {
-            throw new FileNotFoundException();
+            e.printStackTrace();
+            throw new Exception(e);
         }
     }
 }
