@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Dec 12 01:32:12 MST 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0160-49da-4fbc-00000b9c40f0 
+Wed Dec 13 13:21:56 MST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0160-518a-7427-00000e17f210 
 on database directory memory:/Users/quibbleh4ck/Desktop/AlgoQ/testdb with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@4f8e5cde 
 Loaded from file:/Users/quibbleh4ck/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
 java.vendor=Oracle Corporation
