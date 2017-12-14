@@ -1,18 +1,21 @@
 package com.algoq.algoq.services;
 
-import com.algoq.algoq.Constants.Paths;
 import com.algoq.algoq.models.POTD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 @Service
 public class TemplateGenerationService {
@@ -54,6 +57,29 @@ public class TemplateGenerationService {
         ctx.setVariable("potd_question", "Ryan Schachte");
 
         return ctx;
+    }
+
+    /**
+     * Handle posting to external API to grab syntax highlighted HTML from user input
+     */
+    public String syntaxHighlighting(String htmlInput) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://hilite.me/api";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+        map.add("code", htmlInput);
+        map.add("lexer", "java");
+        map.add("style", "monokai");
+        map.add("divstyles", "border:solid+gray;border-width:.1em+.1em+.1em+.8em;padding:.2em+.6em;");
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity( url, request , String.class );
+        log.info(response.getBody().toString());
+        return response.getBody();
     }
 
 

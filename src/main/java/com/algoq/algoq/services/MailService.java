@@ -24,7 +24,6 @@ public class MailService {
     @Autowired
     AlgorithmService algorithmService;
 
-
     @Autowired
     TemplateGenerationService tempGenService;
 
