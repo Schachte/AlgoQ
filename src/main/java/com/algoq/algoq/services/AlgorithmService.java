@@ -5,6 +5,8 @@ import com.algoq.algoq.respositories.SubscriberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +20,15 @@ public class AlgorithmService {
      * Gets a list of subscribers to return to the API
      * @return
      */
-    public List<Subscriber> getSubscribers() {
+    public ArrayList<Subscriber> getSubscribers() {
         ArrayList<Subscriber> subscribers = new ArrayList<>();
         subRep.findAll()
                 .forEach(subscribers::add);
         return subscribers;
+    }
+
+    public String getTest() {
+        return "test";
     }
 
     /**
