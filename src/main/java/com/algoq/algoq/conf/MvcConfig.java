@@ -1,5 +1,6 @@
 package com.algoq.algoq.conf;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
@@ -11,6 +12,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @Configuration
+@EnableAutoConfiguration
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean

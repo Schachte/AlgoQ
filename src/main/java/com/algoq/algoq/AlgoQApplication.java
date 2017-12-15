@@ -1,13 +1,15 @@
 package com.algoq.algoq;
 
-import org.omg.CORBA.Environment;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
-@EnableScheduling
+@ComponentScan("com.algoq.algoq.services")
+@EnableAutoConfiguration
+//@EnableScheduling
 public class AlgoQApplication {
 
 	public static void main(String[] args) {
